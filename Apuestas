@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+    <title>Apuestas en línea</title>
+
+    <script>
+
+      // Contador de tiempo
+
+      var tiempoRestante = 180;
+
+      var x = setInterval(function() {
+
+        // Actualizar contador de tiempo
+
+        var minutos = Math.floor(tiempoRestante / 60);
+
+        var segundos = tiempoRestante % 60;
+
+        document.getElementById("contador").innerHTML = minutos + "m " + segundos + "s ";
+
+        // Ocultar botón cuando falten 30 segundos para terminar el contador
+
+        if (tiempoRestante == 30) {
+
+          document.getElementById("boton").style.display = "none";
+
+        }
+
+        // Reiniciar contador de tiempo cuando llegue a cero
+
+        if (tiempoRestante == 0) {
+
+          clearInterval(x);
+
+          alert("El tiempo para apostar ha terminado.");
+
+          document.getElementById("boton").style.display = "block";
+
+          tiempoRestante = 180;
+
+        }
+
+        tiempoRestante -= 1;
+
+      }, 1000);
+
+    </script>
+
+  </head>
+
+  <body>
+
+    <h1>Apuestas en línea</h1>
+
+    <p>Seleccione su apuesta:</p>
+
+    <form>
+
+      <input type="radio" id="grande" name="apuesta" value="grande">
+
+      <label for="grande">Grande</label><br>
+
+      <input type="radio" id="pequeño" name="apuesta" value="pequeño">
+
+      <label for="pequeño">Pequeño</label><br>
+
+      <label for="monto">Monto a apostar (USD):</label>
+
+      <input type="text" id="monto" name="monto" placeholder="0.00" pattern="\d+(\.\d{2})?" required><br>
+
+      <button type="submit" id="boton" onclick="enviarApuesta()">Enviar apuesta</button>
+
+    </form>
+
+    <p>Tiempo restante para apostar: <span id="contador">3m 0s</span></p>
+
+    <table id="tabla" style="display:none">
+
+      <thead>
+
+        <tr>
+
+          <th>Opción</th>
+
+          <th>Monto</th>
+
+          <th>Fecha</th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="tabla-cuerpo">
+
+      </tbody>
+
+    </table>
+
+    <script>
+
+      // Función para enviar apuesta
+
+      function enviarApuesta() {
+
+        var apuesta = document.querySelector('input[name="apuesta"]:checked');
+
+        var monto = document.getElementById("monto").value;
+
+        if (apuesta) {
+
+          if (monto) {
+
+            // Crear nueva fila en la tabla con los detalles de la apuesta
+
+            var tablaCuerpo = document.getElementById("tabla-cuerpo");
+
+            var nuevaFila = tablaCuerpo.insertRow();
+
+            var celdaOpcion = nuevaFila.insertCell(0);
+
+            var celdaMonto = nuevaFila.insertCell(1);
+
+            var celdaFecha = nuevaFila.insertCell(2);
+
+            celdaOpcion.innerHTML = apuesta.value;
+
+            celdaMonto.innerHTML = monto;
+
+            celdaFecha.innerHTML = new Date().toLocaleString();
+
+            // Mostrar tabla y ocultar botón
+
+            document.getElementById("tabla").style.display = "table";
+
+            document.getElementById("boton").style.display = "none";
+
+          } else {
+
+            alert("Por favor ingrese un monto a apostar.");
+
+          }
+
+        } else {
+
+          alert("Por favor seleccione una opción de apuesta.");
+
+        }
+
+      }
+
+    </script>
+
+  </body>
+
+</html>
